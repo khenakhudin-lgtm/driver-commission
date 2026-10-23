@@ -4,8 +4,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Driver Commission</title>
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="icon" type="image/png" href="apple-touch-icon.png">
 <meta name="theme-color" content="#b85f00">
 <style>
   :root { --bg: #f2f1ec; --card: #ffffff; --ink: #1a2128; --muted: #5c6670; --line: #dcdcd4; --amber: #b85f00; --amber-ink: #ffffff; }
@@ -15,7 +13,7 @@
     padding: max(24px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(24px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
   main { max-width: 440px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
   .head { display: flex; align-items: center; gap: 14px; }
-  .head img { width: 64px; height: 64px; border-radius: 14px; flex: none; }
+  .head img { width: 64px; height: 64px; border-radius: 14px; flex: none; background: var(--amber); }
   h1 { margin: 0; font-size: 26px; line-height: 1.15; }
   .sub { color: var(--muted); font-size: 15px; margin: 2px 0 0; }
   .open { display: flex; align-items: center; justify-content: center; min-height: 54px; border-radius: 12px; background: var(--amber); color: var(--amber-ink);
@@ -32,7 +30,7 @@
 <body>
 <main>
   <div class="head">
-    <img src="apple-touch-icon.png" alt="Driver Commission icon" width="64" height="64">
+    <img id="appIcon" alt="Driver Commission icon" width="64" height="64">
     <div>
       <h1>Driver Commission</h1>
       <p class="sub">Save it on your iPhone like an app</p>
@@ -53,5 +51,27 @@
 
   <p class="note">Tapping the icon opens this page. Tap <b>Open Driver Commission</b> to go to the app. You need to be signed in to Claude with access to the app.</p>
 </main>
+
+<script>
+// Draws the app icon (orange tile, white %) and attaches it as the Home Screen icon.
+(function () {
+  var c = document.createElement('canvas');
+  c.width = 180; c.height = 180;
+  var x = c.getContext('2d');
+  if (!x) return;
+  x.fillStyle = '#b85f00'; x.fillRect(0, 0, 180, 180);
+  x.textAlign = 'center'; x.textBaseline = 'middle';
+  x.fillStyle = '#ffffff'; x.font = 'bold 86px Arial, Helvetica, sans-serif'; x.fillText('%', 90, 72);
+  x.fillStyle = '#ffe2be'; x.font = 'bold 28px Arial, Helvetica, sans-serif'; x.fillText('RM', 90, 134);
+  var url = c.toDataURL('image/png');
+  [['apple-touch-icon', '180x180'], ['icon', '180x180']].forEach(function (r) {
+    var l = document.createElement('link');
+    l.rel = r[0]; l.sizes = r[1]; l.href = url;
+    document.head.appendChild(l);
+  });
+  var img = document.getElementById('appIcon');
+  if (img) img.src = url;
+})();
+</script>
 </body>
 </html>
